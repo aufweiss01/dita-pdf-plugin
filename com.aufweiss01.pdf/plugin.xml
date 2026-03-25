@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://www.dita-ot.org/rng/plugin.rnc" type="application/relax-ng-compact-syntax"?>
+<plugin id="com.aufweiss01.pdf">
+  <require plugin="org.dita.pdf2"/>
+  <feature extension="dita.conductor.transtype.check" value="aufweiss01-pdf"/>
+  <feature extension="dita.transtype.print" value="aufweiss01-pdf"/>
+  <feature extension="ant.import" file="integrator.xml"/>
+  <transtype name="aufweiss01-pdf" extends="pdf" desc="aufweiss PDF"/>
+</plugin>
