@@ -6,62 +6,28 @@
   xmlns:dita-ot="http://dita-ot.sourceforge.net/ns/201007/dita-ot"
   exclude-result-prefixes="xs dita-ot">
 
-  <xsl:template match="*[contains(@class, ' hazard-d/hazardstatement ')]">
-    <xsl:variable name="type" select="(@type, 'caution')[1]" as="xs:string"/>
-    <xsl:variable name="symbolHref" 
+  <xsl:template match="*[contains(@class, ' topic/note ')][@type='warning']">
+    <xsl:variable name="symbolHref"
                   select="*[contains(@class,' hazard-d/hazardsymbol ')]/@href"/>
-    <xsl:apply-templates select="*[contains(@class,' ditaot-d/ditaval-startprop ')]" 
-                         mode="outofline"/>
     <fo:table xsl:use-attribute-sets="hazardstatement">
-      <xsl:call-template name="commonattributes"/>
-      <xsl:call-template name="globalAtts"/>
-      <xsl:call-template name="displayAtts">
-        <xsl:with-param name="element" select="."/>
-      </xsl:call-template>
       <fo:table-column xsl:use-attribute-sets="hazardstatement.image.column"/>
       <fo:table-column xsl:use-attribute-sets="hazardstatement.content.column"/>
       <fo:table-body>
         <fo:table-row keep-with-next="always">
-          <fo:table-cell xsl:use-attribute-sets="hazardstatement.title">
-            <xsl:variable name="atts" as="element()">
-              <xsl:choose>
-                <xsl:when test="$type = 'danger'">
-                  <w xsl:use-attribute-sets="hazardstatement.title.danger"/>
-                </xsl:when>
-                <xsl:when test="$type = 'warning'">
-                  <w xsl:use-attribute-sets="hazardstatement.title.warning"/>
-                </xsl:when>
-                <xsl:when test="$type = 'caution'">
-                  <w xsl:use-attribute-sets="hazardstatement.title.caution"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <w xsl:use-attribute-sets="hazardstatement.title.notice"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <xsl:sequence select="$atts/@*"/>
+          <fo:table-cell xsl:use-attribute-sets="hazardstatement.title hazardstatement.title.warning">
             <fo:block>
-              <xsl:choose>
-                <xsl:when test="exists($symbolHref) and $symbolHref != ''">
-                  <fo:external-graphic 
-                    src="url('{concat($artworkPrefix, $symbolHref)}')"
-                    content-height="1.5em" 
-                    padding-right="6pt"
-                    vertical-align="middle"
-                    baseline-shift="baseline"/>
-                </xsl:when>
-              </xsl:choose>
+              <xsl:if test="exists($symbolHref) and $symbolHref != ''">
+                <fo:external-graphic
+                  src="url('{concat($artworkPrefix, $symbolHref)}')"
+                  content-height="1.5em"
+                  padding-right="6pt"
+                  vertical-align="middle"
+                  baseline-shift="baseline"/>
+              </xsl:if>
               <fo:inline>
-                <xsl:choose>
-                  <xsl:when test="$type='other'">
-                    <xsl:value-of select="@othertype"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:call-template name="getVariable">
-                      <xsl:with-param name="id" select="dita-ot:capitalize($type)"/>
-                    </xsl:call-template>
-                  </xsl:otherwise>
-                </xsl:choose>
+                <xsl:call-template name="getVariable">
+                  <xsl:with-param name="id" select="'Warning'"/>
+                </xsl:call-template>
               </fo:inline>
             </fo:block>
           </fo:table-cell>
@@ -71,15 +37,11 @@
             <fo:block/>
           </fo:table-cell>
           <fo:table-cell xsl:use-attribute-sets="hazardstatement.content">
-            <xsl:apply-templates 
-              select="*[contains(@class, ' hazard-d/messagepanel ')]/*"/>
+            <xsl:apply-templates select="*[contains(@class,' hazard-d/messagepanel ')]/*"/>
           </fo:table-cell>
         </fo:table-row>
       </fo:table-body>
     </fo:table>
-    <xsl:apply-templates 
-      select="*[contains(@class,' ditaot-d/ditaval-endprop ')]" 
-      mode="outofline"/>
   </xsl:template>
 
 </xsl:stylesheet>
