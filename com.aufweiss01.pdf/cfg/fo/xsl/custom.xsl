@@ -19,12 +19,9 @@
           <fo:table-cell xsl:use-attribute-sets="hazardstatement.title hazardstatement.title.warning">
             <fo:block>
               <xsl:if test="exists($symbolHref) and $symbolHref != ''">
-                <fo:external-graphic
-                  src="url('{concat($artworkPrefix, $symbolHref)}')"
-                  content-height="1.5em"
-                  padding-right="6pt"
-                  vertical-align="middle"
-                  baseline-shift="baseline"/>
+                <fo:inline color="red">
+                  HREF: <xsl:value-of select="$symbolHref"/>
+                </fo:inline>
               </xsl:if>
               <fo:inline>
                 <xsl:call-template name="getVariable">
