@@ -6,13 +6,15 @@
   xmlns:dita-ot="http://dita-ot.sourceforge.net/ns/201007/dita-ot"
   exclude-result-prefixes="xs dita-ot">
 
-  <xsl:template match="*[contains(@class, ' topic/note ')][@type='warning']">
+  <!-- Haupttemplate für Warnhinweise -->
+  <xsl:template match="*[contains(@class,' topic/note ')][@type='warning']">
     <xsl:variable name="symbolHref"
                   select="*[contains(@class,' hazard-d/hazardsymbol ')]/@href"/>
     <fo:table xsl:use-attribute-sets="hazardstatement">
       <fo:table-column xsl:use-attribute-sets="hazardstatement.image.column"/>
       <fo:table-column xsl:use-attribute-sets="hazardstatement.content.column"/>
       <fo:table-body>
+        <!-- Zeile 1: Titelzeile mit kleinem Symbol und Signalwort -->
         <fo:table-row keep-with-next="always">
           <fo:table-cell xsl:use-attribute-sets="hazardstatement.title hazardstatement.title.warning">
             <fo:block>
@@ -32,16 +34,59 @@
             </fo:block>
           </fo:table-cell>
         </fo:table-row>
+        <!-- Zeile 2: Symbolspalte links, Inhalt rechts -->
         <fo:table-row>
           <fo:table-cell xsl:use-attribute-sets="hazardstatement.image">
-            <fo:block/>
+            <xsl:choose>
+              <xsl:when test="exists($symbolHref) and $symbolHref != ''">
+                <fo:block>
+                  <fo:external-graphic
+                    src="url('{concat($artworkPrefix, $symbolHref)}')"
+                    xsl:use-attribute-sets="hazardsymbol"/>
+                </fo:block>
+              </xsl:when>
+              <xsl:otherwise>
+                <fo:block/>
+              </xsl:otherwise>
+            </xsl:choose>
           </fo:table-cell>
           <fo:table-cell xsl:use-attribute-sets="hazardstatement.content">
-            <xsl:apply-templates select="*[contains(@class,' hazard-d/messagepanel ')]/*"/>
+            <xsl:apply-templates select="*[contains(@class,' hazard-d/messagepanel ')]"/>
           </fo:table-cell>
         </fo:table-row>
       </fo:table-body>
     </fo:table>
   </xsl:template>
+
+  <!-- messagepanel: gibt seine Kindelemente explizit aus -->
+  <xsl:template match="*[contains(@class,' hazard-d/messagepanel ')]">
+    <xsl:apply-templates select="*[contains(@class,' hazard-d/typeofhazard ')]"/>
+    <xsl:apply-templates select="*[contains(@class,' hazard-d/consequence ')]"/>
+    <xsl:apply-templates select="*[contains(@class,' hazard-d/howtoavoid ')]"/>
+  </xsl:template>
+
+  <!-- typeofhazard -->
+  <xsl:template match="*[contains(@class,' hazard-d/typeofhazard ')]">
+    <fo:block xsl:use-attribute-sets="p">
+      <xsl:apply-templates/>
+    </fo:block>
+  </xsl:template>
+
+  <!-- consequence -->
+  <xsl:template match="*[contains(@class,' hazard-d/consequence ')]">
+    <fo:block xsl:use-attribute-sets="p">
+      <xsl:apply-templates/>
+    </fo:block>
+  </xsl:template>
+
+  <!-- howtoavoid -->
+  <xsl:template match="*[contains(@class,' hazard-d/howtoavoid ')]">
+    <fo:block xsl:use-attribute-sets="p">
+      <xsl:apply-templates/>
+    </fo:block>
+  </xsl:template>
+
+  <!-- hazardsymbol: wird nur über $symbolHref ausgegeben, hier unterdrücken -->
+  <xsl:template match="*[contains(@class,' hazard-d/hazardsymbol ')]"/>
 
 </xsl:stylesheet>
