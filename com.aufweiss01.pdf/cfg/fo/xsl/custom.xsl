@@ -16,14 +16,6 @@
         <fo:table-row keep-with-next="always">
           <fo:table-cell xsl:use-attribute-sets="hazardstatement.title hazardstatement.title.warning">
             <fo:block>
-              <xsl:if test="exists($symbolHref) and $symbolHref != ''">
-                <fo:external-graphic
-                  src="url('{concat($artworkPrefix, $symbolHref)}')"
-                  content-height="1.5em"
-                  padding-right="6pt"
-                  vertical-align="middle"
-                  baseline-shift="baseline"/>
-              </xsl:if>
               <fo:inline>
                 <xsl:call-template name="getVariable">
                   <xsl:with-param name="id" select="'Warning'"/>
@@ -34,18 +26,7 @@
         </fo:table-row>
         <fo:table-row>
           <fo:table-cell xsl:use-attribute-sets="hazardstatement.image">
-            <xsl:choose>
-              <xsl:when test="exists($symbolHref) and $symbolHref != ''">
-                <fo:block>
-                  <fo:external-graphic
-                    src="url('{concat($artworkPrefix, $symbolHref)}')"
-                    xsl:use-attribute-sets="hazardsymbol"/>
-                </fo:block>
-              </xsl:when>
-              <xsl:otherwise>
-                <fo:block/>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:apply-templates select="*[contains(@class,' hazard-d/hazardsymbol ')]"/>
           </fo:table-cell>
           <fo:table-cell xsl:use-attribute-sets="hazardstatement.content">
             <xsl:apply-templates select="*[contains(@class,' hazard-d/messagepanel ')]"/>
@@ -78,7 +59,5 @@
       <xsl:apply-templates/>
     </fo:block>
   </xsl:template>
-
-  <xsl:template match="*[contains(@class,' hazard-d/hazardsymbol ')]"/>
 
 </xsl:stylesheet>
