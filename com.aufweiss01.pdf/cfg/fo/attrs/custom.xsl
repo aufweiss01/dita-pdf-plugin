@@ -10,4 +10,8 @@
     <xsl:attribute name="keep-together">auto</xsl:attribute>
   </xsl:attribute-set>
 
+  <xsl:attribute-set name="hazardstatement">
+    <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
+  </xsl:attribute-set>
+
 </xsl:stylesheet>
