@@ -14,4 +14,15 @@
     <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
   </xsl:attribute-set>
 
+  <xsl:attribute-set name="sl">
+    <!--
+    <xsl:attribute name="provisional-distance-between-starts">10mm</xsl:attribute>
+    -->
+    <xsl:attribute name="provisional-label-separation">2mm</xsl:attribute>
+  </xsl:attribute-set>
+
+  <xsl:attribute-set name="sli">
+    <xsl:attribute name="space-after">2pt</xsl:attribute>
+  </xsl:attribute-set>
+
 </xsl:stylesheet>

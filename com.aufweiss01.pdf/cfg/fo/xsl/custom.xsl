@@ -60,4 +60,23 @@
     </fo:block>
   </xsl:template>
 
+  <xsl:template match="*[contains(@class,' topic/sl ')]">
+    <fo:list-block xsl:use-attribute-sets="sl">
+      <xsl:apply-templates/>
+    </fo:list-block>
+  </xsl:template>
+
+  <xsl:template match="*[contains(@class,' topic/sli ')]">
+    <fo:list-item xsl:use-attribute-sets="sli">
+      <fo:list-item-label end-indent="label-end()">
+        <fo:block>–</fo:block>
+      </fo:list-item-label>
+      <fo:list-item-body start-indent="body-start()">
+        <fo:block>
+          <xsl:apply-templates/>
+        </fo:block>
+      </fo:list-item-body>
+    </fo:list-item>
+  </xsl:template>
+
 </xsl:stylesheet>
