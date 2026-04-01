@@ -6,4 +6,8 @@
     <xsl:attribute name="color">#FF0000</xsl:attribute>
   </xsl:attribute-set>
 
+  <xsl:attribute-set name="hazardstatement.content">
+    <xsl:attribute name="keep-together">auto</xsl:attribute>
+  </xsl:attribute-set>
+
 </xsl:stylesheet>
